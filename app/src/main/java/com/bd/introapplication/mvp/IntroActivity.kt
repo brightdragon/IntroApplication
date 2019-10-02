@@ -3,6 +3,9 @@ package com.bd.introapplication.mvp
 import androidx.fragment.app.Fragment
 import com.bd.introapplication.R
 import com.bd.introapplication.mvp.base.BaseActivity
+import com.bd.introapplication.mvp.data.source.IntroRepository
+import com.bd.introapplication.mvp.presenter.IntroContract
+import com.bd.introapplication.mvp.presenter.IntroPresenter
 import com.bd.introapplication.mvp.ui.FragmentSelectedListener
 import com.bd.introapplication.mvp.ui.IntroFragment
 import com.bd.introapplication.mvp.ui.LoginFragment
@@ -10,9 +13,11 @@ import com.bd.introapplication.mvp.ui.PermissionFragment
 
 class IntroActivity : BaseActivity(), FragmentSelectedListener {
 
+    private lateinit var mPresenter: IntroPresenter
+
     override fun getLayoutResource(): Int = R.layout.activity_main
     override fun initialize() {
-        newFragmentTask(IntroViewType.VIEW_PERMISSION)
+        newFragmentTask(IntroViewType.VIEW_INTRO)
     }
 
     override fun setFragmentSelect(viewType: IntroViewType) {
@@ -21,11 +26,15 @@ class IntroActivity : BaseActivity(), FragmentSelectedListener {
 
     override fun onAttachFragment(fragment: Fragment) {
         super.onAttachFragment(fragment)
+
         if (fragment is IntroFragment) {
+            mPresenter = IntroPresenter(fragment, IntroRepository(this@IntroActivity))
             fragment.setFragmentSelectListener(this)
         } else if (fragment is PermissionFragment) {
+            mPresenter = IntroPresenter(fragment, IntroRepository(this@IntroActivity))
             fragment.setFragmentSelectListener(this)
         } else if(fragment is LoginFragment){
+            mPresenter = IntroPresenter(fragment, IntroRepository(this@IntroActivity))
             fragment.setFragmentSelectListener(this)
         }
     }
@@ -55,10 +64,6 @@ class IntroActivity : BaseActivity(), FragmentSelectedListener {
             }
 
             IntroViewType.VIEW_OVERLAY -> {
-
-            }
-
-            else -> {
 
             }
         }

@@ -13,5 +13,4 @@ abstract class BaseActivity : AppCompatActivity() {
         setContentView(getLayoutResource())
         initialize()
     }
-
 }
